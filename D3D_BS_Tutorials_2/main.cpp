@@ -1,18 +1,16 @@
 #include "stdafx.h"
-
 //´°¿Ú¾ä±ú
 HWND hwnd = NULL;
+
+
 
 // name of the window (not the title)
 auto WindowName = L"BzTutsApp";
 
 // title of the window
 auto WindowTitle = L"Bz Window";
-
-// width and height of the window
 int Width = 800;
 int Height = 600;
-
 // is window full screen?
 bool FullScreen = false;
 
@@ -31,22 +29,28 @@ LRESULT CALLBACK WndProc(HWND hWnd,
     WPARAM wParam,
     LPARAM lParam);
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
+
+int WINAPI WinMain(
+    _In_ HINSTANCE hInstance,
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPSTR     lpCmdLine,
+    _In_ int       nCmdShow
+)
 {
     // create the window
-    if (!InitializeWindow(hInstance, nCmdShow, Width, Height, FullScreen))
+    if (!InitializeWindow(hInstance, nCmdShow, 800, 800, false))
     {
         MessageBox(0, L"Window Initialization - Failed",
             L"Error", MB_OK);
         return 0;
     }
 
+
     // start the main loop
     mainloop();
 
     return 0;
 }
-
 bool InitializeWindow(HINSTANCE hInstance,
     int ShowWnd,
     int width, int height,
@@ -85,7 +89,7 @@ bool InitializeWindow(HINSTANCE hInstance,
         return false;
     }
 
-    hwnd = CreateWindowEx(NULL,
+    hwnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,
         WindowName,
         WindowTitle,
         WS_OVERLAPPEDWINDOW,
@@ -134,7 +138,8 @@ void mainloop() {
     }
 }
 
-LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch (msg)
     {
@@ -142,7 +147,7 @@ LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         if (wParam == VK_ESCAPE) {
             if (MessageBox(0, L"Are you sure you want to exit?",
                 L"Really?", MB_YESNO | MB_ICONQUESTION) == IDYES)
-                DestroyWindow(hwnd);
+                DestroyWindow(hWnd);
         }
         return 0;
 
@@ -150,9 +155,8 @@ LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         PostQuitMessage(0);
         return 0;
     }
-    return DefWindowProc(hwnd,
+    return DefWindowProc(hWnd,
         msg,
         wParam,
         lParam);
 }
-
