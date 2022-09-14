@@ -152,6 +152,7 @@ bool InitD3D()
 
 // -- 创建设备 Create the Device -- //
 #pragma region CreateDevice
+    //create adapter
     IDXGIFactory4* dxgiFactory;
     hr = CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory));
     if (FAILED(hr))
@@ -254,7 +255,7 @@ bool InitD3D()
 
 // -- 创建渲染目标缓冲的描述符堆Create the Back Buffers (render target views) Descriptor Heap -- //
 #pragma region CreateBackBuffers
-        // describe an rtv descriptor heap and create
+    // describe an rtv descriptor heap and create
     D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
     rtvHeapDesc.NumDescriptors = frameBufferCount; // number of descriptors for this heap.
     rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; // this heap is a render target view heap
@@ -356,7 +357,8 @@ void Update()
 void UpdatePipeline()
 {
     HRESULT hr;
-
+//--  重置命令分配器和命令列表 -- //
+#pragma region ResetAlloAndList
     // We have to wait for the gpu to finish with the command allocator before we reset it
     WaitForPreviousFrame();
 
@@ -383,17 +385,24 @@ void UpdatePipeline()
     {
         Running = false;
     }
+#pragma endregion
 
+
+    //-- 使用命令列表记录命令 --//
+#pragma region SignInCommands
     // here we start recording commands into the commandList (which all the commands will be stored in the commandAllocator)
 
     // transition the "frameIndex" render target from the present state to the render target state so the command list draws to it starting from here
-    auto pesent2Target = CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex],
+    auto pesent2Target = CD3DX12_RESOURCE_BARRIER::Transition(
+        renderTargets[frameIndex],
         D3D12_RESOURCE_STATE_PRESENT,
         D3D12_RESOURCE_STATE_RENDER_TARGET);
     commandList->ResourceBarrier(1, &pesent2Target);
 
     // here we again get the handle to our current render target view so we can set it as the render target in the output merger stage of the pipeline
-    CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), frameIndex, rtvDescriptorSize);
+    CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(
+        rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), 
+        frameIndex, rtvDescriptorSize);
 
     // set the render target for the output merger stage (the output of the pipeline)
     commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, nullptr);
@@ -404,10 +413,11 @@ void UpdatePipeline()
 
     // transition the "frameIndex" render target from the render target state to the present state. If the debug layer is enabled, you will receive a
     // warning if present is called on the render target when it's not in the present state
-    auto target2Present = CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex],
+    auto target2Present = CD3DX12_RESOURCE_BARRIER::Transition(
+        renderTargets[frameIndex],
         D3D12_RESOURCE_STATE_RENDER_TARGET,
         D3D12_RESOURCE_STATE_PRESENT);
-    commandList->ResourceBarrier(1, 
+    commandList->ResourceBarrier(1,
         &target2Present);
 
     hr = commandList->Close();
@@ -415,6 +425,9 @@ void UpdatePipeline()
     {
         Running = false;
     }
+#pragma endregion SignInCommands
+
+    
 }
 
 void Render()
