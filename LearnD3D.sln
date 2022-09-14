@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D3D_BS_Tutorials_2", "D3D_B
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D3D_BS_Tutorials_3", "D3D_BS_Tutorials_3\D3D_BS_Tutorials_3.vcxproj", "{16427C54-AE15-49B9-8745-8FD38F15E9A6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D3D_BS_Tutorials_4", "D3D_BS_Tutorials_4\D3D_BS_Tutorials_4.vcxproj", "{28205831-3F65-444A-ABE0-9866BA62BA93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{16427C54-AE15-49B9-8745-8FD38F15E9A6}.Release|x64.Build.0 = Release|x64
 		{16427C54-AE15-49B9-8745-8FD38F15E9A6}.Release|x86.ActiveCfg = Release|Win32
 		{16427C54-AE15-49B9-8745-8FD38F15E9A6}.Release|x86.Build.0 = Release|Win32
+		{28205831-3F65-444A-ABE0-9866BA62BA93}.Debug|x64.ActiveCfg = Debug|x64
+		{28205831-3F65-444A-ABE0-9866BA62BA93}.Debug|x64.Build.0 = Debug|x64
+		{28205831-3F65-444A-ABE0-9866BA62BA93}.Debug|x86.ActiveCfg = Debug|Win32
+		{28205831-3F65-444A-ABE0-9866BA62BA93}.Debug|x86.Build.0 = Debug|Win32
+		{28205831-3F65-444A-ABE0-9866BA62BA93}.Release|x64.ActiveCfg = Release|x64
+		{28205831-3F65-444A-ABE0-9866BA62BA93}.Release|x64.Build.0 = Release|x64
+		{28205831-3F65-444A-ABE0-9866BA62BA93}.Release|x86.ActiveCfg = Release|Win32
+		{28205831-3F65-444A-ABE0-9866BA62BA93}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
